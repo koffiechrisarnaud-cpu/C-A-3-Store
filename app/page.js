@@ -96,12 +96,13 @@ export default function Home() {
       </main>
 
       <section className="about" id="apropos">
-        <div className="about-text" data-reveal>
+        <div className="wrap about-in" data-reveal>
           <h2>À propos</h2>
-          <p>{NAME} regroupe mes ebooks et formations au même endroit. Chaque produit te mène directement à la boutique officielle pour un achat simple et sécurisé.</p>
-          <a className="btn" href="#boutiques">Découvrir</a>
+          <div>
+            <p>{NAME} regroupe mes ebooks et formations au même endroit. Chaque produit te mène directement à la boutique officielle pour un achat simple et sécurisé.</p>
+            <a className="btn" href="#boutiques">Découvrir</a>
+          </div>
         </div>
-        <div className="about-img" aria-hidden="true" data-reveal style={{ "--d": "0.12s" }} />
       </section>
 
       <footer id="contact">
