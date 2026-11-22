@@ -5,24 +5,8 @@ import logo from "./logo.png";
 
 const NAME = "C-A 3 Store";
 const WA_LINK = "https://wa.me/2250170079695?text=Bonjour%2C%20je%20souhaite%20avoir%20plus%20d%E2%80%99informations%20sur%20vos%20produits.";
-
-const HERO = STORES.map((s) => ({
-  id: s.id,
-  tile: s.tile,
-  store: s.name,
-  title: s.products[0].title,
-  price: s.products[0].price,
-  img: s.products[0].img,
-}));
-
-function Check() {
-  return (
-    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-      <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
+const TITLE = ["Ebooks", "et", "formations,", "simplement."];
+const WORDS = ["Ebooks", "Formations", "Marketing digital", "Bien-être naturel", "Prompts IA", "Vendre en ligne"];
 
 export default function Home() {
   return (
@@ -31,33 +15,37 @@ export default function Home() {
       <Header />
 
       <div className="hero-wrap">
+        <span className="orb o1" aria-hidden="true" />
+        <span className="orb o2" aria-hidden="true" />
+        <span className="orb o3" aria-hidden="true" />
         <div className="wrap hero">
           <div className="hero-text">
             <p className="eyebrow">Mes boutiques</p>
-            <h1>Ebooks et formations, simplement.</h1>
+            <h1 aria-label="Ebooks et formations, simplement.">
+              {TITLE.map((w, i) => (
+                <span key={w} aria-hidden="true">
+                  {i > 0 ? " " : ""}
+                  <span className="w"><span style={{ "--i": i }}>{w}</span></span>
+                </span>
+              ))}
+            </h1>
             <p className="lead">Des guides pratiques pour apprendre, vendre et passer à l’action.</p>
             <a className="btn" href="#boutiques">Voir les boutiques</a>
-            <ul className="trust">
-              <li><Check /> Paiement sécurisé</li>
-              <li><Check /> Accès immédiat après achat</li>
-              <li><Check /> Aide sur WhatsApp</li>
-            </ul>
           </div>
-          <div className="showcase" aria-hidden="true">
-            {HERO.map((c, i) => (
-              <div key={c.id} className={`sc sc-${i + 1}`} style={{ "--tile": c.tile }}>
-                {c.img ? (
-                  <img src={c.img} alt="" />
-                ) : (
-                  <>
-                    <small>{c.store}</small>
-                    <span>{c.title}</span>
-                  </>
-                )}
-                <em className="pill">{c.price}</em>
-              </div>
-            ))}
+          <div className="stage" aria-hidden="true">
+            <div className="ring-wrap"><div className="ring" /></div>
+            <div className="block" />
           </div>
+        </div>
+      </div>
+
+      <div className="marquee" aria-hidden="true">
+        <div className="track">
+          {[0, 1].map((k) => (
+            <div className="seq" key={k}>
+              {WORDS.map((w) => <span key={`${k}-${w}`}>{w}</span>)}
+            </div>
+          ))}
         </div>
       </div>
 
