@@ -70,6 +70,8 @@ footer{padding:56px 0 40px}
 .foot a.logo{color:var(--ink);margin-bottom:0}
 .foot a:hover{color:var(--ink)}
 .copy{color:var(--muted);margin-top:12px;font-size:.85rem}
+.wa{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;background:#25d366;color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.22);z-index:50;transition:transform .15s}
+.wa:hover{transform:scale(1.07)}
 @media (max-width:780px){
   nav.main{display:none}
   .hero{grid-template-columns:1fr;padding-top:32px}
