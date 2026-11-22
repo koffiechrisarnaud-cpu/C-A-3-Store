@@ -13,9 +13,15 @@ const LINKS = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 8);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(max > 0 ? Math.min(y / max, 1) : 0);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -48,6 +54,7 @@ export default function Header() {
           <a key={l.label} href={l.href} onClick={() => setOpen(false)}>{l.label}</a>
         ))}
       </nav>
+      <span className="progress" aria-hidden="true" style={{ transform: `scaleX(${progress})` }} />
     </header>
   );
 }
