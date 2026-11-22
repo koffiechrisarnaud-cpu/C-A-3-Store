@@ -95,15 +95,16 @@ h1{font-weight:300;font-size:clamp(2.6rem,6.2vw,4.4rem);line-height:1.06;letter-
 /* Rouleau des boutiques */
 h2{font-weight:300;font-size:clamp(1.7rem,3.6vw,2.3rem);letter-spacing:-.01em;margin:0 0 10px}
 .drum{position:relative;height:calc(100svh * (1.7 + 0.85 * (var(--n) - 1)));background:var(--bg)}
-.drum-pin{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(14px,3svh,32px);padding:72px 24px 16px;overflow:hidden;background:radial-gradient(ellipse at 50% 55%,#f6f4f1 0%,var(--bg) 70%)}
-.drum-head{text-align:center}
+.drum-pin{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2.4svh,26px);padding:72px 24px 14px;overflow:hidden;background:radial-gradient(ellipse at 50% 55%,#f6f4f1 0%,var(--bg) 70%)}
+.drum-head{text-align:center;position:relative;z-index:2}
 .drum-head .eyebrow{margin-bottom:10px}
 .drum-head h2{font-size:clamp(1.4rem,3.2vw,2.1rem);margin:0}
-.drum-stage{width:100%;height:min(56svh,420px);display:flex;align-items:center;justify-content:center;perspective:1500px}
-.drum-wheel{position:relative;width:min(720px,88vw);height:min(48svh,360px);transform-style:preserve-3d;will-change:transform}
-.dcard{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(20px,4vw,40px);background:var(--tile);box-shadow:0 30px 60px rgba(0,0,0,.12);text-decoration:none;backface-visibility:hidden;-webkit-backface-visibility:hidden;will-change:transform,opacity}
-.dnum{font-size:clamp(2.6rem,8vw,5.5rem);font-weight:300;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(17,17,17,.4)}
-.dbody h3{font-weight:300;font-size:clamp(1.8rem,5vw,3.1rem);line-height:1.05;letter-spacing:-.02em;margin:0 0 10px}
+.drum-stage{width:100%;height:min(60svh,470px);display:flex;align-items:center;justify-content:center;perspective:1500px;overflow:hidden}
+.drum-wheel{position:relative;width:min(780px,90vw);height:min(46svh,350px);transform-style:preserve-3d;will-change:transform}
+.dcard{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(20px,4vw,42px);background:var(--tile);border:1px solid rgba(17,17,17,.08);box-shadow:0 20px 40px rgba(0,0,0,.08);text-decoration:none;backface-visibility:hidden;-webkit-backface-visibility:hidden;will-change:transform,opacity;transition:box-shadow .4s ease,border-color .4s ease}
+.dcard.on{border-color:rgba(17,17,17,.35);box-shadow:0 36px 70px rgba(0,0,0,.2)}
+.dnum{font-size:clamp(2.6rem,8vw,5.5rem);font-weight:300;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(17,17,17,.45)}
+.dbody h3{font-weight:300;font-size:clamp(2rem,5.5vw,3.4rem);line-height:1.05;letter-spacing:-.02em;margin:0 0 10px}
 .dbody p{margin:0;max-width:44ch;color:var(--muted);font-size:clamp(.9rem,1.6vw,1.02rem)}
 .dfoot{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .dpill{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;border:1px solid var(--ink);border-radius:999px;padding:5px 14px;background:rgba(255,255,255,.55)}
@@ -142,10 +143,10 @@ article:hover .cover img{transform:scale(1.05)}
 .buy:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.18)}
 
 /* À propos et pied de page */
-.about{position:relative;background:var(--greige);display:grid;grid-template-columns:1fr 1fr;margin-top:calc(var(--cut) * -1);padding-top:var(--cut);clip-path:polygon(0 var(--cut),100% 0,100% 100%,0 100%)}
-.about-text{padding:80px 24px 80px max(24px,calc((100vw - 1100px)/2 + 24px));align-self:center;max-width:620px}
-.about-text p{max-width:42ch;margin:0 0 26px}
-.about-img{background:var(--stone);min-height:300px}
+.about{position:relative;background:var(--greige);margin-top:calc(var(--cut) * -1);padding:calc(var(--cut) + 64px) 0 72px;clip-path:polygon(0 var(--cut),100% 0,100% 100%,0 100%)}
+.about-in{display:grid;grid-template-columns:1fr 1.2fr;gap:24px 64px;align-items:start}
+.about-in h2{font-size:clamp(2rem,5vw,3.2rem);line-height:1.08;margin:0}
+.about-in p{max-width:46ch;margin:0 0 26px;font-size:1.08rem}
 footer{padding:56px 0 40px}
 .foot{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;font-size:.9rem}
 .foot h5{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin:0 0 14px}
@@ -172,9 +173,9 @@ footer{padding:56px 0 40px}
   .mobile-nav a{display:block;padding:16px 24px;border-top:1px solid var(--line);text-decoration:none;font-size:1.05rem}
   .hero{grid-template-columns:1fr;padding-top:24px}
   .hero-text{padding-bottom:8px}
-  .drum-wheel{height:min(52svh,340px)}
-  .about{grid-template-columns:1fr}
-  .about-text{padding:56px 24px}
+  .drum-stage{height:min(58svh,440px)}
+  .drum-wheel{height:min(45svh,330px)}
+  .about-in{grid-template-columns:1fr}
   .foot{grid-template-columns:1fr 1fr}
 }
 
