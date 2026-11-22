@@ -1,6 +1,7 @@
 import { STORES } from "../data/stores";
 import Header from "./components/Header";
 import Effects from "./components/Effects";
+import Drum from "./components/Drum";
 import logo from "./logo.png";
 
 const NAME = "C-A 3 Store";
@@ -9,6 +10,14 @@ const TITLE = ["Ebooks", "et", "formations,", "simplement."];
 const WORDS = ["Ebooks", "Formations", "Marketing digital", "Bien-être naturel", "Prompts IA", "Vendre en ligne"];
 
 export default function Home() {
+  const drumStores = STORES.map((s) => ({
+    id: s.id,
+    name: s.name,
+    tile: s.tile,
+    desc: s.desc,
+    count: s.products.length,
+  }));
+
   return (
     <>
       <Effects />
@@ -49,48 +58,38 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="band" id="boutiques">
-        <div className="wrap center">
-          <h2 data-reveal>Nos boutiques</h2>
-          <p className="sub" data-reveal style={{ "--d": "0.08s" }}>Trois univers, un seul endroit pour tout retrouver.</p>
-          <div className="collection">
-            {STORES.map((s, i) => (
-              <a className="card" href={`#${s.id}`} key={s.id} data-reveal style={{ "--d": `${i * 0.1}s` }}>
-                <div className="tile" style={{ "--tile": s.tile }}>
-                  {s.products.length} {s.products.length > 1 ? "produits" : "produit"}
-                </div>
-                <h3>{s.name}</h3>
-                <span className="exp">Explorer <span className="arr">→</span></span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Drum stores={drumStores} />
 
-      <main className="wrap">
-        {STORES.map((s) => (
-          <section className="store" id={s.id} key={s.id}>
-            <div className="store-head" data-reveal>
-              <div><h2>{s.name}</h2><p>{s.desc}</p></div>
-              <a className="visit" href={s.shop} target="_blank" rel="noopener noreferrer">Visiter la boutique</a>
-            </div>
-            <div className="grid">
-              {s.products.map((p, i) => (
-                <article key={p.title} data-reveal style={{ "--d": `${i * 0.08}s` }}>
-                  <div className="cover" style={{ "--tile": s.tile }}>
-                    {p.img ? <img src={p.img} alt={p.title} /> : <span>{p.title}</span>}
-                  </div>
-                  <div className="info">
-                    <h4>{p.title}</h4>
-                    <div className="row">
-                      <span className="price">{p.price}</span>
-                      <a className="buy" href={p.url} target="_blank" rel="noopener noreferrer">
-                        {p.price === "Gratuit" ? "Obtenir" : "Acheter"}
-                      </a>
+      <main className="stores">
+        {STORES.map((s, i) => (
+          <section className={`panel${i === 0 ? " first" : ""}`} id={s.id} key={s.id} style={{ "--tile": s.tile }}>
+            <div className="wrap">
+              <div className="store-head" data-reveal>
+                <div>
+                  <span className="idx">{String(i + 1).padStart(2, "0")}</span>
+                  <h2>{s.name}</h2>
+                  <p>{s.desc}</p>
+                </div>
+                <a className="visit" href={s.shop} target="_blank" rel="noopener noreferrer">Visiter la boutique</a>
+              </div>
+              <div className="grid">
+                {s.products.map((p, j) => (
+                  <article key={p.title} data-reveal style={{ "--d": `${0.1 + j * 0.09}s` }}>
+                    <div className="cover" style={{ "--tile": s.tile }}>
+                      {p.img ? <img src={p.img} alt={p.title} /> : <span>{p.title}</span>}
                     </div>
-                  </div>
-                </article>
-              ))}
+                    <div className="info">
+                      <h4>{p.title}</h4>
+                      <div className="row">
+                        <span className="price">{p.price}</span>
+                        <a className="buy" href={p.url} target="_blank" rel="noopener noreferrer">
+                          {p.price === "Gratuit" ? "Obtenir" : "Acheter"}
+                        </a>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
             </div>
           </section>
         ))}
