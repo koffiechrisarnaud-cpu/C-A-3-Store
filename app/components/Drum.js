@@ -84,6 +84,7 @@ export default function Drum({ stores }) {
                 className="dcard"
                 href={`#${s.id}`}
                 key={s.id}
+                data-s={s.id}
                 style={{ "--tile": s.tile, opacity: i === 0 ? 1 : 0 }}
               >
                 <span className="dnum">{String(i + 1).padStart(2, "0")}</span>
