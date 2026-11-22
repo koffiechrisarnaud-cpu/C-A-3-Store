@@ -42,7 +42,7 @@ export default function Drum({ stores }) {
 
       cards.forEach((c, i) => {
         const d = Math.abs(i - pos);
-        c.style.opacity = String(clamp(1 - d * 0.65, 0, 1));
+        c.style.opacity = String(clamp(1 - d * 0.8, 0, 1));
         c.style.pointerEvents = d < 0.5 ? "auto" : "none";
         c.classList.toggle("on", d < 0.5);
       });
