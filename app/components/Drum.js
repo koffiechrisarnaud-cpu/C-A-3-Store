@@ -19,52 +19,120 @@ export default function Drum({ stores }) {
     const cards = Array.from(wheel.querySelectorAll(".dcard"));
     const dots = Array.from(section.querySelectorAll(".ddot"));
     const hint = section.querySelector(".drum-hint");
-    let R = 500;
-    let raf = 0;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const layout = () => {
+    let R = 500;
+    let top = 0;
+    let dist = 1;
+    let width = window.innerWidth;
+    let cur = 0;
+    let target = 0;
+    let raf = 0;
+    let lastDot = -1;
+    let lastHint = -1;
+    const state = cards.map(() => ({ op: -1, on: null }));
+
+    // Mesures (faites rarement, jamais pendant le défilement)
+    const measure = () => {
       const h = wheel.offsetHeight;
       R = (h * 1.12) / 2 / Math.tan((STEP * Math.PI) / 360);
       cards.forEach((c, i) => {
         c.style.transform = `rotateX(${-i * STEP}deg) translateZ(${R}px)`;
       });
+      const vh = pin.offsetHeight;
+      dist = (n - 1) * vh * 0.85;
+      top = section.getBoundingClientRect().top + window.scrollY;
     };
 
-    const update = () => {
-      raf = 0;
-      const vh = pin.offsetHeight;
-      const dist = (n - 1) * vh * 0.85;
-      const top = section.getBoundingClientRect().top;
-      const p = dist > 0 ? clamp(-top / dist, 0, 1) : 0;
-      const pos = p * (n - 1);
-
-      wheel.style.transform = `translateZ(${-R}px) rotateX(${pos * STEP}deg)`;
+    // Applique la position du rouleau (n'écrit que ce qui change)
+    const render = () => {
+      const pos = cur * (n - 1);
+      wheel.style.transform = `translate3d(0, 0, ${-R}px) rotateX(${pos * STEP}deg)`;
 
       cards.forEach((c, i) => {
         const d = Math.abs(i - pos);
-        c.style.opacity = String(clamp(1 - d * 0.8, 0, 1));
-        c.style.pointerEvents = d < 0.5 ? "auto" : "none";
-        c.classList.toggle("on", d < 0.5);
+        const op = Math.round(clamp(1 - d * 0.8, 0, 1) * 100) / 100;
+        const st = state[i];
+        if (op !== st.op) {
+          c.style.opacity = String(op);
+          st.op = op;
+        }
+        const on = d < 0.5;
+        if (on !== st.on) {
+          c.classList.toggle("on", on);
+          c.style.pointerEvents = on ? "auto" : "none";
+          st.on = on;
+        }
       });
-      dots.forEach((dot, i) => dot.classList.toggle("on", i === Math.round(pos)));
-      if (hint) hint.style.opacity = String(clamp(1 - p * 10, 0, 1));
+
+      const di = Math.round(pos);
+      if (di !== lastDot) {
+        dots.forEach((dot, i) => dot.classList.toggle("on", i === di));
+        lastDot = di;
+      }
+      if (hint) {
+        const o = Math.round(clamp(1 - cur * 10, 0, 1) * 100) / 100;
+        if (o !== lastHint) {
+          hint.style.opacity = String(o);
+          lastHint = o;
+        }
+      }
+    };
+
+    const readTarget = () => (dist > 0 ? clamp((window.scrollY - top) / dist, 0, 1) : 0);
+
+    // Mouvement lissé vers la position visée
+    const tick = () => {
+      raf = 0;
+      const diff = target - cur;
+      if (Math.abs(diff) < 0.0006) {
+        cur = target;
+        render();
+        return;
+      }
+      cur += diff * 0.22;
+      render();
+      raf = requestAnimationFrame(tick);
     };
 
     const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    const onResize = () => {
-      layout();
-      update();
+      const t = readTarget();
+      if (t === target) return;
+      target = t;
+      if (reduce) {
+        cur = t;
+        render();
+        return;
+      }
+      if (!raf) raf = requestAnimationFrame(tick);
     };
 
-    layout();
-    update();
+    const refresh = () => {
+      measure();
+      target = readTarget();
+      cur = target;
+      render();
+    };
+
+    // Sur mobile, la barre d'adresse change la hauteur : on ignore, seule la largeur compte
+    const onResize = () => {
+      if (window.innerWidth === width) return;
+      width = window.innerWidth;
+      refresh();
+    };
+
+    refresh();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", refresh);
+    window.addEventListener("load", refresh);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
+
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", refresh);
+      window.removeEventListener("load", refresh);
       if (raf) cancelAnimationFrame(raf);
     };
   }, [n]);
