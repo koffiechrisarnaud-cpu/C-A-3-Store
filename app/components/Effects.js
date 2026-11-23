@@ -25,6 +25,17 @@ export default function Effects() {
       );
       els.forEach((e) => io.observe(e));
       cleanups.push(() => io.disconnect());
+
+      // Met en pause les animations qui tournent en boucle quand elles ne sont plus visibles
+      const pausables = Array.from(document.querySelectorAll(".hero-wrap, .marquee"));
+      const po = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((en) => en.target.classList.toggle("off", !en.isIntersecting));
+        },
+        { rootMargin: "100px 0px" }
+      );
+      pausables.forEach((el) => po.observe(el));
+      cleanups.push(() => po.disconnect());
     }
 
     // Léger effet de profondeur avec la souris (ordinateur uniquement)
