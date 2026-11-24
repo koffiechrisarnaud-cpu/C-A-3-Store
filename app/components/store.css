@@ -2,14 +2,17 @@
 .ss{
   --hbg:var(--orange);--hfg:#ffffff;--hfg2:var(--indigo);--hbtn:var(--indigo);--hbtnfg:#ffffff;--heyebrow:var(--indigo);
   --bbg:var(--indigo);--bfg:#ffffff;--bfg2:rgba(255,255,255,.8);--bfill:var(--orange);--bfillfg:var(--indigo);
+  --tbg:var(--orange);--tfg:var(--indigo);
 }
 .ss[data-theme="white"]{
   --hbg:#ffffff;--hfg:var(--indigo);--hfg2:#4e4680;--hbtn:var(--indigo);--hbtnfg:#ffffff;--heyebrow:var(--orange);
   --bbg:var(--indigo);--bfg:#ffffff;--bfg2:rgba(255,255,255,.8);--bfill:var(--orange);--bfillfg:var(--indigo);
+  --tbg:var(--lav);--tfg:var(--indigo);
 }
 .ss[data-theme="indigo"]{
   --hbg:var(--indigo);--hfg:#ffffff;--hfg2:rgba(255,255,255,.85);--hbtn:var(--orange);--hbtnfg:var(--indigo);--heyebrow:var(--orange);
   --bbg:var(--orange);--bfg:#ffffff;--bfg2:var(--indigo);--bfill:var(--indigo);--bfillfg:#ffffff;
+  --tbg:var(--indigo);--tfg:#ffffff;
 }
 
 /* En-tête */
@@ -30,6 +33,9 @@
 .ss-eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--heyebrow);margin:0 0 18px}
 .ss-hero h1{font-weight:300;font-size:clamp(2.3rem,6vw,4.2rem);line-height:1.06;letter-spacing:-.02em;margin:0 0 22px;color:var(--hfg)}
 .ss-lead{font-size:1.12rem;max-width:36ch;margin:0 0 30px;color:var(--hfg2)}
+.ss-cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:16px 26px}
+.ss-more{color:var(--hfg2);font-weight:600;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:3px;transition:opacity .2s ease}
+.ss-more:hover{opacity:.65}
 .ss-note{margin:18px 0 0;font-size:.85rem;color:var(--hfg2)}
 .ss-hero .btn,.ss-final .btn{background:var(--hbtn);color:var(--hbtnfg)}
 .ss-art{position:relative;display:flex;justify-content:center;animation:fadeIn 1s ease .25s backwards}
@@ -47,10 +53,28 @@
 .ss-h2{font-weight:300;font-size:clamp(1.8rem,4.5vw,3rem);line-height:1.1;letter-spacing:-.02em;margin:0 0 12px}
 .ss-sub{max-width:52ch;margin:0 0 40px;color:var(--muted)}
 
+/* Tous les produits */
+.ss-products{--sbg:#ffffff;color:var(--ink)}
+.ss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:26px}
+.ss-prod{height:100%;display:flex;flex-direction:column}
+.ss-pcover{position:relative;aspect-ratio:4/5;background:var(--tbg);color:var(--tfg);display:flex;align-items:flex-end;padding:20px;overflow:hidden;transition:transform .35s ease,box-shadow .35s ease}
+.ss-prod:hover .ss-pcover{transform:translateY(-5px);box-shadow:0 16px 32px rgba(38,26,102,.18)}
+.ss-pcover span{font-weight:300;font-size:1.35rem;line-height:1.2}
+.ss-pcover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.ss-prod:hover .ss-pcover img{transform:scale(1.05)}
+.ss-badge{position:absolute;top:14px;left:14px;font-style:normal;font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#ffffff;color:var(--indigo);padding:4px 12px;border-radius:999px}
+.ss-pinfo{padding-top:16px;display:flex;flex-direction:column;gap:10px;flex:1}
+.ss-pinfo h3{font-weight:500;font-size:1.08rem;margin:0}
+.ss-pinfo p{margin:0;color:var(--muted);font-size:.95rem}
+.ss-prow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto;padding-top:6px}
+.ss-price{font-weight:600}
+.ss-buy{background:var(--hbtn);color:var(--hbtnfg);text-decoration:none;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:11px 18px;transition:transform .2s ease,box-shadow .2s ease}
+.ss-buy:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.22)}
+
 /* Ce que tu reçois */
-.ss-features{--sbg:#ffffff;color:var(--ink)}
+.ss-features{--sbg:var(--lav);color:var(--ink)}
 .ss-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
-.ss-card{height:100%;background:var(--lav);padding:28px;transition:transform .3s ease,box-shadow .3s ease}
+.ss-card{height:100%;background:#ffffff;padding:28px;transition:transform .3s ease,box-shadow .3s ease}
 .ss-card:hover{transform:translateY(-5px);box-shadow:0 16px 32px rgba(38,26,102,.12)}
 .ss-num{display:block;font-size:2.6rem;font-weight:300;line-height:1;color:transparent;-webkit-text-stroke:1px var(--indigo);opacity:.6;margin-bottom:14px}
 .ss-card h3{font-weight:500;font-size:1.15rem;margin:0 0 8px}
