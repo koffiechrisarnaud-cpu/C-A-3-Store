@@ -6,6 +6,7 @@ export const kael = {
   theme: "orange", // orange, white ou indigo
   whatsappText: "Bonjour, je souhaite avoir plus d’informations sur Kael Média.",
 
+  // Texte de l’accueil (il présente le produit marqué « featured »)
   hero: {
     eyebrow: "Ressource gratuite",
     title: "Passer de l’idée à l’action en 7 jours",
@@ -14,14 +15,26 @@ export const kael = {
     note: "PDF gratuit · 4 pages · à lire sur ton téléphone",
   },
 
-  // Quand tu auras l’image de couverture, mets-la dans public/covers/ puis écris par exemple cover: "/covers/kael.jpg"
-  product: {
-    title: "Passer de l’idée à l’action en 7 jours",
-    price: "Gratuit",
-    url: "https://osvjvqtb.mychariow.co",
-    cover: "",
-  },
+  // Section « tous les produits » : elle s’affiche toute seule dès qu’il y a 2 produits ou plus
+  productsTitle: "Tous les produits",
+  productsText: "Choisis le produit qui correspond à ton besoin.",
 
+  // Liste des produits. Pour en ajouter un : copie un bloc { ... }, colle-le à la suite, puis change les textes.
+  // Image de couverture : mets le fichier dans public/covers/ puis écris par exemple cover: "/covers/kael-1.jpg"
+  products: [
+    {
+      id: "idee-action-7-jours",
+      title: "Passer de l’idée à l’action en 7 jours",
+      description: "Une checklist en 6 étapes et un plan de 7 jours, en PDF.",
+      price: "Gratuit",
+      url: "https://osvjvqtb.mychariow.co",
+      cover: "",
+      badge: "", // facultatif, ex. "Nouveau" (« Gratuit » s’affiche tout seul pour un produit gratuit)
+      featured: true, // le produit mis en avant dans l’accueil
+    },
+  ],
+
+  // Sections facultatives : supprime un bloc pour le retirer du site
   features: {
     title: "Ce que tu reçois",
     text: "Un guide court, concret, fait pour être appliqué tout de suite.",
