@@ -3,12 +3,18 @@ import Effects from "./Effects";
 
 const DEFAULT_WA = "2250170079695";
 
+const labelFor = (p) => (p.price === "Gratuit" ? "Obtenir" : "Acheter");
+
 export default function StoreSite({ site }) {
-  const { hero, product, features, days, final } = site;
+  const { hero, features, days, final } = site;
+  const products = site.products || [];
+  const featured = products.find((p) => p.featured) || products[0];
+  if (!featured) return null;
+
+  const many = products.length > 1;
   const waText = site.whatsappText || `Bonjour, je souhaite avoir plus d’informations sur ${site.name}.`;
   const wa = `https://wa.me/${site.whatsapp || DEFAULT_WA}?text=${encodeURIComponent(waText)}`;
-  const buyLabel = product.price === "Gratuit" ? "Obtenir" : "Acheter";
-  const numbers = Array.from({ length: days.count }, (_, i) => i + 1);
+  const numbers = days ? Array.from({ length: days.count }, (_, i) => i + 1) : [];
 
   return (
     <div className="ss" data-theme={site.theme}>
@@ -17,7 +23,9 @@ export default function StoreSite({ site }) {
       <header className="ss-head">
         <div className="wrap ss-bar">
           <span className="ss-brand">{site.name}</span>
-          <a className="btn ss-head-btn" href={product.url} target="_blank" rel="noopener noreferrer">{buyLabel}</a>
+          <a className="btn ss-head-btn" href={featured.url} target="_blank" rel="noopener noreferrer">
+            {labelFor(featured)}
+          </a>
         </div>
       </header>
 
@@ -27,63 +35,106 @@ export default function StoreSite({ site }) {
             <p className="ss-eyebrow">{hero.eyebrow}</p>
             <h1>{hero.title}</h1>
             <p className="ss-lead">{hero.lead}</p>
-            <a className="btn" href={product.url} target="_blank" rel="noopener noreferrer">{hero.cta}</a>
-            <p className="ss-note">{hero.note}</p>
+            <div className="ss-cta-row">
+              <a className="btn" href={featured.url} target="_blank" rel="noopener noreferrer">{hero.cta}</a>
+              {many && <a className="ss-more" href="#produits">Voir tous les produits ↓</a>}
+            </div>
+            {hero.note && <p className="ss-note">{hero.note}</p>}
           </div>
           <div className="ss-art" aria-hidden="true">
-            {product.cover ? (
-              <img className="ss-cover-img" src={product.cover} alt="" />
+            {featured.cover ? (
+              <img className="ss-cover-img" src={featured.cover} alt="" />
             ) : (
               <div className="ss-cover">
                 <small>{site.name}</small>
-                <strong>{hero.title}</strong>
-                <em>{product.price}</em>
+                <strong>{featured.title}</strong>
+                <em>{featured.price}</em>
               </div>
             )}
           </div>
         </div>
       </section>
 
-      <section className="ss-sec ss-features">
-        <div className="wrap">
-          <h2 className="ss-h2" data-reveal>{features.title}</h2>
-          <p className="ss-sub" data-reveal style={{ "--d": "0.08s" }}>{features.text}</p>
-          <div className="ss-cards">
-            {features.items.map((f, i) => (
-              <div key={f.title} data-reveal style={{ "--d": `${0.1 + i * 0.1}s` }}>
-                <div className="ss-card">
-                  <span className="ss-num">{String(i + 1).padStart(2, "0")}</span>
-                  <h3>{f.title}</h3>
-                  <p>{f.text}</p>
-                </div>
-              </div>
-            ))}
+      {many && (
+        <section className="ss-sec ss-products" id="produits">
+          <div className="wrap">
+            <h2 className="ss-h2" data-reveal>{site.productsTitle || "Nos produits"}</h2>
+            <p className="ss-sub" data-reveal style={{ "--d": "0.08s" }}>
+              {site.productsText || "Choisis le produit qui correspond à ton besoin."}
+            </p>
+            <div className="ss-grid">
+              {products.map((p, i) => {
+                const badge = p.badge || (p.price === "Gratuit" ? "Gratuit" : "");
+                return (
+                  <div key={p.id || p.title} data-reveal style={{ "--d": `${0.1 + i * 0.08}s` }}>
+                    <article className="ss-prod">
+                      <div className="ss-pcover">
+                        {p.cover ? <img src={p.cover} alt={p.title} /> : <span>{p.title}</span>}
+                        {badge && <em className="ss-badge">{badge}</em>}
+                      </div>
+                      <div className="ss-pinfo">
+                        <h3>{p.title}</h3>
+                        {p.description && <p>{p.description}</p>}
+                        <div className="ss-prow">
+                          <span className="ss-price">{p.price}</span>
+                          <a className="ss-buy" href={p.url} target="_blank" rel="noopener noreferrer">{labelFor(p)}</a>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      <section className="ss-sec ss-days">
-        <div className="wrap">
-          <h2 className="ss-h2" data-reveal>{days.title}</h2>
-          <p className="ss-sub" data-reveal style={{ "--d": "0.08s" }}>{days.text}</p>
-          <ol className="ss-days-row">
-            {numbers.map((n) => (
-              <li className="ss-day" key={n} data-reveal style={{ "--d": `${0.1 + n * 0.08}s` }}>
-                <span className="ss-dot">{n}</span>
-                <small>Jour {n}</small>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
+      {features && (
+        <section className="ss-sec ss-features">
+          <div className="wrap">
+            <h2 className="ss-h2" data-reveal>{features.title}</h2>
+            <p className="ss-sub" data-reveal style={{ "--d": "0.08s" }}>{features.text}</p>
+            <div className="ss-cards">
+              {features.items.map((f, i) => (
+                <div key={f.title} data-reveal style={{ "--d": `${0.1 + i * 0.1}s` }}>
+                  <div className="ss-card">
+                    <span className="ss-num">{String(i + 1).padStart(2, "0")}</span>
+                    <h3>{f.title}</h3>
+                    <p>{f.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
-      <section className="ss-sec ss-final">
-        <div className="wrap" data-reveal>
-          <h2 className="ss-h2">{final.title}</h2>
-          <p className="ss-sub">{final.text}</p>
-          <a className="btn" href={product.url} target="_blank" rel="noopener noreferrer">{final.cta}</a>
-        </div>
-      </section>
+      {days && (
+        <section className="ss-sec ss-days">
+          <div className="wrap">
+            <h2 className="ss-h2" data-reveal>{days.title}</h2>
+            <p className="ss-sub" data-reveal style={{ "--d": "0.08s" }}>{days.text}</p>
+            <ol className="ss-days-row">
+              {numbers.map((n) => (
+                <li className="ss-day" key={n} data-reveal style={{ "--d": `${0.1 + n * 0.08}s` }}>
+                  <span className="ss-dot">{n}</span>
+                  <small>Jour {n}</small>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+
+      {final && (
+        <section className="ss-sec ss-final">
+          <div className="wrap" data-reveal>
+            <h2 className="ss-h2">{final.title}</h2>
+            <p className="ss-sub">{final.text}</p>
+            <a className="btn" href={featured.url} target="_blank" rel="noopener noreferrer">{final.cta}</a>
+          </div>
+        </section>
+      )}
 
       <footer className="ss-sec ss-foot">
         <div className="wrap">© 2026 {site.name}</div>
